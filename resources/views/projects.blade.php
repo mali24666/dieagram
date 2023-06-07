@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Laravel Project Manager</title>
@@ -546,4 +546,4 @@
      
     </script>
 </body>
-</html>
+</html> --}}
