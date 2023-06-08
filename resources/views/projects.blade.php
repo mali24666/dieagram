@@ -1,4 +1,4 @@
-{{-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Laravel Project Manager</title>
@@ -84,7 +84,7 @@
             <div class="modal-body">
                 <div id="error-div"></div>
                 <form>
-                    <input type="hidden" name="update_id" id="update_id">
+                    <input  name="update_id" id="update_id">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" name="name">
@@ -175,24 +175,36 @@
                     {
                         var nameid = projects[i].id;
 
-                        // let showBtn =  '<button ' +
-                        //     ' class="btn btn-outline-info" ' +
-                        //     ' onclick="showProject(' + projects[i].id + ')">Show' +
-                        // '</button> ';
-                        // let editBtn =  '<button ' +
-                        //     ' class="btn btn-outline-success" ' +
-                        //     ' onclick="editProject(' + projects[i].id + ')">Edit' +
-                        // '</button> ';
+                        let showBtn =  '<button ' +
+                            ' class="btn btn-outline-info" ' +
+                            ' onclick="showProject(' + projects[i].id + ')">Show' +
+                        '</button> ';
+                        let editBtn =  '<button ' +
+                            ' class="btn btn-outline-success" ' +
+                            ' onclick="editProject(' + projects[i].id + ')">Edit' +
+                        '</button> ';
+                        let addWright =  '<button ' +
+                            ' class="btn btn-outline-success" ' +
+                            ' onclick="addwrite(' + projects[i].id + ')">add to write' +
+                        '</button> ';
+                        let addDown =  '<button ' +
+                            ' class="btn btn-outline-success" ' +
+                            ' onclick="addDown(' + projects[i].id + ')">add to down' +
+                        '</button> ';
+
                         let deleteBtn =  '<button ' +
-                            ' class="btn btn-outline-danger drop-down" ' +
+                            ' class="btn btn-outline-danger " ' +
                             ' onclick="destroyProject(' + projects[i].id + ')">-' +
                         '</button>';
                         let add =  '<i ' +
                             ' class=" 	glyphicon glyphicon-option-vertical pluse" ' +
-                            ' >' +projects[i].top+
+                            ' >' +
                             '</i>';
                        let dropdown =     '<div class="drop-down" >'+
-                                            '<li class="add" value="+projects[i].top+"></li>'+
+                                            '<li  >'+addWright+'</li>'+
+                                            '<li  >'+addDown+'</li>'+
+                                            '<li  >'+editBtn+'</li>'+
+                                            '<li  >'+deleteBtn+'</li>'+
 
                                         '</div>' ;
 
@@ -304,7 +316,7 @@
         */
         $("#save-project-btn").click(function(event ){
             event.preventDefault();
-            if($("#update_id").val() == null || $("#update_id").val() == "")
+            if($("#update_id").val() == null || $("#update_id").val() == "" || $("#update_id").val() == "addwrite")
             {
                 storeProject();
             } else {
@@ -425,6 +437,9 @@
                     $("#error-div").html("");   
                     $("#update_id").val(project.id);
                     $("#name").val(project.name);
+                    $("#top").val(project.top);
+                    $("#left").val(project.left);
+                    $("#station").val(project.station);
                     $("#description").val(project.description);
                     $("#form-modal").modal('show'); 
                 },
@@ -434,6 +449,65 @@
             });
         }
      
+                /*
+        اضافة عنصر باتجاه اليمين بطريقة التعديل علي العنصر السابق 
+                */
+        function addwrite(id)
+        {
+            console.log("addwrite");
+            let url = $('meta[name=app-url]').attr("content") + "/projects/" + id ;
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function(response) {
+                    let project = response.project;
+                    let y = project.left ;
+                    let newY =parseInt(y) +100;
+                    $("#alert-div").html("");
+                    $("#error-div").html("");   
+                    $("#update_id").val("addwrite");
+                    $("#name").val(project.name);
+                    $("#top").val(project.top);
+                    $("#left").val(newY);
+                    $("#station").val(project.station);
+                    $("#description").val(project.description);
+                    $("#form-modal").modal('show'); 
+                },
+                error: function(response) {
+                    console.log(response.responseJSON)
+                }
+            });
+        }
+                /*
+        اضافة عنصر للاسفل  بطريقة التعديل علي العنصر السابق 
+                */
+                function addDown(id)
+        {
+            console.log("addwrite");
+            let url = $('meta[name=app-url]').attr("content") + "/projects/" + id ;
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function(response) {
+                    let project = response.project;
+                    let y = project.top ;
+                    let newY =parseInt(y) +100;
+                    $("#alert-div").html("");
+                    $("#error-div").html("");   
+                    $("#update_id").val("addwrite");
+                    $("#name").val(project.name);
+                    $("#top").val(newY);
+                    $("#left").val(project.left);
+                    $("#station").val(project.station);
+                    $("#description").val(project.description);
+                    $("#form-modal").modal('show'); 
+                },
+                error: function(response) {
+                    console.log(response.responseJSON)
+                }
+            });
+        }
+
         /*
             sumbit the form and will update a record
         */
@@ -546,4 +620,4 @@
      
     </script>
 </body>
-</html> --}}
+</html>
