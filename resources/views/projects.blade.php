@@ -12,10 +12,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
    <style>
-    .move {
-        position: relative; 
-        background-color: rgb(192, 176, 39);
-    }
     .pluse {
         position:relative ;
         background-color: red;
@@ -23,15 +19,36 @@
     }
     .new-move {
         position:absolute ;
-
+        /* background-color: gray; */
+        border-style: solid;
         /* top: 120px;
         left: 10px; */
     }
     .drop-down {
         display: none ;
-        background-color: rgb(215, 159, 188);
+        background-color: rgb(248, 251, 248);
          position:absolute ;
     }
+    hr {
+        border: 2px solid red;
+        border-radius: 50px;
+        }
+        .vl {
+        border-left: 6px solid green;
+        height: 220px;
+        position: absolute;
+        left: 50%;
+        margin-left: -3px;
+        top: 0;
+        }
+        .hl {
+            display: block;
+            border-top:  6px solid green;
+            position: absolute;
+            width: 150px
+
+        }
+
     </style> 
 </head>
 <body>
@@ -53,22 +70,6 @@
                     <div class="move" id="show"></div>
 
                 </div>
-                {{-- <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>top</th>
-                            <th>left</th>
-                            <th>station</th>
-                            <th>Description</th>
-                            <th width="240px">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="projects-table-body">
-                         
-                    </tbody>
-                     
-                </table> --}}
             </div>
         </div>
     </div>
@@ -144,23 +145,6 @@
         /*
             This function will get all the project records
         */
-        //     $(window).click(function(e) {
-        //     // console.log("widow");
-        //     $(".drop-down").hide();
-        // });
-
-//         $('body').click(function(evt){    
-//        if(evt.target.id == "drop")
-//           console.log("hellow");;
-//        //For descendants of menu_content being clicked, remove this check if you do not want to put constraint on descendants.
-//        if($(evt.target).closest('.pluse').length)
-//           console.log("second one");;             
-
-//       //Do processing of click event here for every element except with id menu_content
-
-// });
-
-
 
         function showAllProjects()
         {
@@ -181,69 +165,82 @@
                         '</button> ';
                         let editBtn =  '<button ' +
                             ' class="btn btn-outline-success" ' +
-                            ' onclick="editProject(' + projects[i].id + ')">Edit' +
+                            ' onclick="editProject(' + projects[i].id + ')">' +
+                            '<i class = "glyphicon glyphicon-pencil"></i>'+
                         '</button> ';
-                        let addWright =  '<button ' +
+                        let addWright = 
+                            '<button ' +
                             ' class="btn btn-outline-success" ' +
-                            ' onclick="addwrite(' + projects[i].id + ')">add to write' +
-                        '</button> ';
+                            ' onclick="addwrite(' + projects[i].id + ')">' +
+                            '<i class = "glyphicon glyphicon-arrow-right"></i>'+
+                            '</button> ';
                         let addDown =  '<button ' +
                             ' class="btn btn-outline-success" ' +
-                            ' onclick="addDown(' + projects[i].id + ')">add to down' +
+                            ' onclick="addDown(' + projects[i].id + ')">' +
+                            '<i class = "glyphicon glyphicon-arrow-down"></i>'+
                         '</button> ';
-
+                        
                         let deleteBtn =  '<button ' +
                             ' class="btn btn-outline-danger " ' +
-                            ' onclick="destroyProject(' + projects[i].id + ')">-' +
+                            ' onclick="destroyProject(' + projects[i].id + ')">' +
+                            '<i class = "glyphicon glyphicon-trash"></i>'+
                         '</button>';
                         let add =  '<i ' +
                             ' class=" 	glyphicon glyphicon-option-vertical pluse" ' +
                             ' >' +
                             '</i>';
-                       let dropdown =     '<div class="drop-down" >'+
-                                            '<li  >'+addWright+'</li>'+
-                                            '<li  >'+addDown+'</li>'+
-                                            '<li  >'+editBtn+'</li>'+
-                                            '<li  >'+deleteBtn+'</li>'+
+                       let dropdown =     '<div class="drop-down text-center" >'+
+                                            '<spam  >'+addWright+'</spam>'+
+                                            '<spam  >'+addDown+'</spam>'+
+                                            '<spam  >'+editBtn+'</spam>'+
+                                            '<spam  >'+deleteBtn+'</spam>'+
+                                           '</div>' ;
+                        var m = projects[i].station;
+                        if (m==2) {
+                            let projectRow = 
+                            '<div class="vl text-center " id="move2"><div  >'+'<br>'+'<br>' + projects[i].name +'<br>'+ add + dropdown+'</div></div>' ;
+                            var x = projects[i].top ;
+                        var y =  projects[i].left ;
 
-                                        '</div>' ;
+                                $("#projects-table-body") .append( $(projectRow) .attr("id", "id_" + i) .offset({top:x , left:y}) );  
+                                $('.move').hide();
 
-                        let projectRow = 
-                            '<div class="move" id="move"><hr><div  >' + projects[i].name + add + dropdown+'</div></div>' 
+                        }
+                        else  if   (m==3) {
+                            let projectRow = 
+                            '<div class="hl " id="move3"><div  >' + projects[i].name + add + dropdown+'</div></div>' ;
+                            var x = projects[i].top ;
+                        var y =  projects[i].left ;
+
+                                $("#projects-table-body") .append( $(projectRow) .attr("id", "id_" + i) .offset({top:x , left:y}) );  
+                                $('.move').hide();
+
+                        }
+
+
+                         else {
+                            let projectRow = 
+                            '<div class="move " id="move"><hr><div  >' + projects[i].name + add + dropdown+'</div></div>' 
                             // '<td>' + projects[i].top + '</td>' +
                             // '<td>' + projects[i].left + '</td>' +
                             // '<td>' + projects[i].station + '</td>' +
                             // '<td>' + projects[i].description + '</td>' +
                             // '<td>' + showBtn + editBtn + deleteBtn + '</td>' +
                         ;
-                        
                         var x = projects[i].top ;
                         var y =  projects[i].left ;
-                        // var x =[ projects[i].top ,
-                        //         projects[i].left
-                        //         ] ;
+
                                 $("#projects-table-body") .append(projectRow , $(projectRow) .attr("id", "id_" + i) .attr("class",'new-move').offset({top:x , left:y}) );  
                                 $('.move').hide();
-                        // $("#projects-table-body").each(function(i, e){
-                        //     $(this).append(projectRow);
-                        //     $(projectRow) .offset({top:x , left:y});
-                        //     .attr("id", "id_" + i);
-                        // });
+
+                        }
                         
-                        // $("#projects-table-body").appendTo('.pluse'
-                        //     );
-                            
-                        // $(this).offset({top:x , left:y});
-
-                        // var x = '';
-                        // var y = '';
-
                     }
                     $(".pluse").click(function (e) { 
                         e.preventDefault();
                         $(this).siblings(".drop-down").toggle();
 
-                                            // Close the dropdown menu if the user clicks outside of it
+                        // Close the dropdown menu if the user clicks outside of it
                         window.onclick = function(event) {
                         if (!event.target.matches('.pluse')) {
                             var dropdowns = document.getElementsByClassName("drop-down");
@@ -260,55 +257,12 @@
 
                     });
 
-                    $(".add").click(function (e) { 
-                        e.preventDefault();
-                        var X = $(this).html();
-                        console.log(X);
-
-                        var offset = $(this).offset();
-
-                        
-                        var top = offset.top-93.7;
-                        var left = offset.left-100;
-                        $("#alert-div").html("");
-                        $("#error-div").html("");   
-                        $("#update_id").val("");
-                        $("#name").val("");
-                        $("#top").val(top);
-                        $("#left").val(left);
-                        $("#station").val("");
-                        $("#description").val("");
-                        $("#form-modal").modal('show'); 
-
-                    });
 
                 },
                 error: function(response) {
                     console.log(response.responseJSON)
                 }
             });
-        }
-        function move(x)
-        {
-           var y= x[0];
-            var z= x[1];
-            console.log('y'+'='+y);
-            console.log(z);
-            //  $('.move').attr("id", "id_" + i)
-            //                 .appendTo(this);
-            // var offset = $('#move').offset();
-            // var top = offset.top;
-            // var left = offset.left;
-            // console.log("top="+top ,'left ='+left);
-
-            // $('#move').offset({top:0 , left:0});
-            // $('#move').offset({top: y , left: z});
-
-
-            console.log("new top="+top ,'left ='+left);
-
-            // $(this).offset({top:110 , left:100});
-
         }
 
         /*
@@ -519,6 +473,10 @@
                 id: $("#update_id").val(),
                 name: $("#name").val(),
                 description: $("#description").val(),
+                top: $("#top").val(),
+                left: $("#left").val(),
+                station: $("#station").val(),
+
             };
             $.ajax({
                 headers: {
@@ -533,6 +491,9 @@
                     $("#alert-div").html(successHtml);
                     $("#name").val("");
                     $("#description").val("");
+                    $("#top").val("");
+                    $("#left").val("");
+                    $("#station").val("");
                     showAllProjects();
                     $("#form-modal").modal('hide');
                 },

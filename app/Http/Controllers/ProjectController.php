@@ -69,6 +69,9 @@ class ProjectController extends Controller
   
         $project = Project::find($id);
         $project->name = $request->name;
+        $project->top = $request->top;
+        $project->left = $request->left;
+        $project->station = $request->station;
         $project->description = $request->description;
         $project->save();
         return response()->json(['status' => "success"]);
