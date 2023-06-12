@@ -54,7 +54,7 @@
 <body>
   
     <div class="container">
-        <h2 class="text-center mt-5 mb-3">Laravel Project Manager</h2>
+        <h2 class="text-center mt-5 mb-3">dieagram </h2>
         <div class="card">
 
             <div class="card-header">
@@ -100,9 +100,15 @@
                     </div>
                     <div class="form-group">
                         <label for="station">station</label>
-                        <input type="text" class="form-control" id="station" name="station">
+                        <select class="form-control {{ $errors->has('station') ? 'is-invalid' : '' }}" name="station" id="station">
+                            <option value disabled {{ old('station', null) === null ? 'selected' : '' }}>station</option>
+                            @foreach(App\Models\project::typeSelecy as $key => $label)
+                                <option value="{{ $key }}" {{ old('station', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>        
+                        {{-- <input type="text" class="form-control" id="station" name="station"> --}}
                     </div>
-
+                    
                     <div class="form-group">
                         <label for="description">Description</label>
                         <textarea class="form-control" id="description" rows="3" name="description"></textarea>
@@ -416,14 +422,40 @@
                 success: function(response) {
                     let project = response.project;
                     let y = project.left ;
-                    let newY =parseInt(y) +100;
+                    let newY =parseInt(y) +60;
                     $("#alert-div").html("");
                     $("#error-div").html("");   
                     $("#update_id").val("addwrite");
                     $("#name").val(project.name);
-                    $("#top").val(project.top);
-                    $("#left").val(newY);
                     $("#station").val(project.station);
+                    if (project.station==2) {
+                        let y = project.left ;
+                        let newY =parseInt(y) ;
+                        let x = project.top ;
+                        let newx =parseInt(x) +150;
+                        $("#top").val(newx);
+
+                        $("#left").val(newY);
+                        console.log('2');
+                    }
+                  else  if (project.station==3) {
+                        let y = project.left ;
+                        let newY =parseInt(y) +250;
+                        $("#left").val(newY);
+                        $("#top").val(project.top);
+                        console.log('3');
+
+                    }
+
+                    else {
+                        let y = project.left ;
+                        let newY2 =parseInt(y) +50;
+                        $("#left").val(newY2);
+                        $("#top").val(project.top);
+                        console.log('else');
+
+                    }
+
                     $("#description").val(project.description);
                     $("#form-modal").modal('show'); 
                 },
@@ -444,15 +476,31 @@
                 type: "GET",
                 success: function(response) {
                     let project = response.project;
-                    let y = project.top ;
-                    let newY =parseInt(y) +100;
+                    // let y = project.top ;
+                    // let newY =parseInt(y) +100;
                     $("#alert-div").html("");
                     $("#error-div").html("");   
                     $("#update_id").val("addwrite");
                     $("#name").val(project.name);
-                    $("#top").val(newY);
                     $("#left").val(project.left);
                     $("#station").val(project.station);
+                    if (project.station==2) {
+                        let y = project.top ;
+                        let newY =parseInt(y) +220;
+                        $("#top").val(newY);
+                    }
+                  else  if (project.station==3) {
+                        let y = project.top ;
+                        let newY =parseInt(y) +0;
+                        $("#top").val(newY);
+                    }
+
+                    else {
+                        let y = project.top ;
+                        let newY2 =parseInt(y) +50;
+                        $("#top").val(newY2);
+
+                    }
                     $("#description").val(project.description);
                     $("#form-modal").modal('show'); 
                 },

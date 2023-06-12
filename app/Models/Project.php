@@ -19,4 +19,14 @@ class Project extends Model
         'deleted_at',
     ];
 
+    public const typeSelecy = [
+        '1' => 'station',
+        '2' => 'down feeder',
+        '3' => 'write feeder',
+        '4' => 'transformer',
+        '5' => 'ct',
+
+
+    ];
+
 }
