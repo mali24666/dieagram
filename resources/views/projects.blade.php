@@ -108,7 +108,11 @@
                         </select>        
                         {{-- <input type="text" class="form-control" id="station" name="station"> --}}
                     </div>
-                    
+                    <div class="form-group">
+                        <label for="transefer">transefer</label>
+                        <input type="text" class="form-control" id="transefer" name="transefer">
+                    </div>
+
                     <div class="form-group">
                         <label for="description">Description</label>
                         <textarea class="form-control" id="description" rows="3" name="description"></textarea>
@@ -226,7 +230,7 @@
 
                          else {
                             let projectRow = 
-                            '<div class="move " id="move"><hr><div  >' + projects[i].name + add + dropdown+'</div></div>' 
+                            '<div class="move " ondblclick="showProject(' + projects[i].id + ')" id="move"><hr><div  >' + projects[i].name + add + dropdown+'</div></div>' 
                             // '<td>' + projects[i].top + '</td>' +
                             // '<td>' + projects[i].left + '</td>' +
                             // '<td>' + projects[i].station + '</td>' +
@@ -432,18 +436,18 @@
                         let y = project.left ;
                         let newY =parseInt(y) ;
                         let x = project.top ;
-                        let newx =parseInt(x) +150;
+                        let newx =parseInt(x) +220;
                         $("#top").val(newx);
 
                         $("#left").val(newY);
-                        console.log('2');
+                        console.log('1');
                     }
                   else  if (project.station==3) {
                         let y = project.left ;
-                        let newY =parseInt(y) +250;
+                        let newY =parseInt(y) +100;
                         $("#left").val(newY);
                         $("#top").val(project.top);
-                        console.log('3');
+                        console.log('2');
 
                     }
 
@@ -452,7 +456,9 @@
                         let newY2 =parseInt(y) +50;
                         $("#left").val(newY2);
                         $("#top").val(project.top);
-                        console.log('else');
+                        transefer
+                        
+                        console.log('3');
 
                     }
 
@@ -488,17 +494,27 @@
                         let y = project.top ;
                         let newY =parseInt(y) +220;
                         $("#top").val(newY);
+                        console.log('4');
+
                     }
                   else  if (project.station==3) {
                         let y = project.top ;
                         let newY =parseInt(y) +0;
                         $("#top").val(newY);
+                        let x = project.left ;
+                        let newY3 =parseInt(x) +150;
+                        $("#left").val(newY3);
+
+                        console.log('5');
+
                     }
 
                     else {
                         let y = project.top ;
                         let newY2 =parseInt(y) +50;
                         $("#top").val(newY2);
+                        console.log('6');
+
 
                     }
                     $("#description").val(project.description);
