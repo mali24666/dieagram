@@ -61,6 +61,11 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="#minibller_no_boxes" role="tab" data-toggle="tab">
+                {{ trans('cruds.box.title') }}
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="#cb_no_transeformers" role="tab" data-toggle="tab">
                 {{ trans('cruds.transeformer.title') }}
             </a>
@@ -69,6 +74,9 @@
     <div class="tab-content">
         <div class="tab-pane" role="tabpanel" id="cb_number_minibllers">
             @includeIf('admin.cbs.relationships.cbNumberMinibllers', ['minibllers' => $cb->cbNumberMinibllers])
+        </div>
+        <div class="tab-pane" role="tabpanel" id="minibller_no_boxes">
+            @includeIf('admin.cbs.relationships.minibllerNoBoxes', ['boxes' => $cb->minibllerNoBoxes])
         </div>
         <div class="tab-pane" role="tabpanel" id="cb_no_transeformers">
             @includeIf('admin.cbs.relationships.cbNoTranseformers', ['transeformers' => $cb->cbNoTranseformers])

@@ -492,6 +492,106 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => 121,
+                'title' => 'project_create',
+            ],
+            [
+                'id'    => 122,
+                'title' => 'project_edit',
+            ],
+            [
+                'id'    => 123,
+                'title' => 'project_show',
+            ],
+            [
+                'id'    => 124,
+                'title' => 'project_delete',
+            ],
+            [
+                'id'    => 125,
+                'title' => 'project_access',
+            ],
+            [
+                'id'    => 126,
+                'title' => 'rmu_create',
+            ],
+            [
+                'id'    => 127,
+                'title' => 'rmu_edit',
+            ],
+            [
+                'id'    => 128,
+                'title' => 'rmu_show',
+            ],
+            [
+                'id'    => 129,
+                'title' => 'rmu_delete',
+            ],
+            [
+                'id'    => 130,
+                'title' => 'rmu_access',
+            ],
+            [
+                'id'    => 131,
+                'title' => 'autorecloser_create',
+            ],
+            [
+                'id'    => 132,
+                'title' => 'autorecloser_edit',
+            ],
+            [
+                'id'    => 133,
+                'title' => 'autorecloser_show',
+            ],
+            [
+                'id'    => 134,
+                'title' => 'autorecloser_delete',
+            ],
+            [
+                'id'    => 135,
+                'title' => 'autorecloser_access',
+            ],
+            [
+                'id'    => 136,
+                'title' => 'section_lazy_create',
+            ],
+            [
+                'id'    => 137,
+                'title' => 'section_lazy_edit',
+            ],
+            [
+                'id'    => 138,
+                'title' => 'section_lazy_show',
+            ],
+            [
+                'id'    => 139,
+                'title' => 'section_lazy_delete',
+            ],
+            [
+                'id'    => 140,
+                'title' => 'section_lazy_access',
+            ],
+            [
+                'id'    => 141,
+                'title' => 'avr_create',
+            ],
+            [
+                'id'    => 142,
+                'title' => 'avr_edit',
+            ],
+            [
+                'id'    => 143,
+                'title' => 'avr_show',
+            ],
+            [
+                'id'    => 144,
+                'title' => 'avr_delete',
+            ],
+            [
+                'id'    => 145,
+                'title' => 'avr_access',
+            ],
+            [
+                'id'    => 146,
                 'title' => 'profile_password_edit',
             ],
         ];

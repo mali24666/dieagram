@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use \DateTimeInterface;
 use App\Traits\Auditable;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,10 +13,24 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Box extends Model implements HasMedia
 {
-    use SoftDeletes;
-    use InteractsWithMedia;
-    use Auditable;
-    use HasFactory;
+    use SoftDeletes, InteractsWithMedia, Auditable, HasFactory;
+
+    public $table = 'boxes';
+
+    protected $appends = [
+        'box_photo',
+    ];
+
+    public static $searchable = [
+        'box_number',
+        'box_notes',
+    ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
     public const BOX_TYPE_SELECT = [
         '1' => '1',
@@ -29,38 +43,21 @@ class Box extends Model implements HasMedia
         'broken'     => 'broken',
     ];
 
-    public $table = 'boxes';
-
-    public static $searchable = [
-        'box_number',
-        'box_notes',
-    ];
-
-    protected $appends = [
-        'box_photo',
-    ];
-
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
     protected $fillable = [
+        'minibller_no_id',
         'box_number',
         'box_type',
         'box_location',
         'box_notes',
-        'minibller_no_id',
+        'trans_box_id',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
 
-    public static function boot()
+    protected function serializeDate(DateTimeInterface $date)
     {
-        parent::boot();
-        Box::observe(new \App\Observers\BoxActionObserver());
+        return $date->format('Y-m-d H:i:s');
     }
 
     public function registerMediaConversions(Media $media = null): void
@@ -69,25 +66,35 @@ class Box extends Model implements HasMedia
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
 
+    public function boxCosutomerStations()
+    {
+        return $this->belongsToMany(Station::class);
+    }
+
+    public function boxTranseformers()
+    {
+        return $this->belongsToMany(Transeformer::class);
+    }
+
+    public function minibller_no()
+    {
+        return $this->belongsTo(Cb::class, 'minibller_no_id');
+    }
+
     public function getBoxPhotoAttribute()
     {
         $files = $this->getMedia('box_photo');
         $files->each(function ($item) {
-            $item->url = $item->getUrl();
+            $item->url       = $item->getUrl();
             $item->thumbnail = $item->getUrl('thumb');
-            $item->preview = $item->getUrl('preview');
+            $item->preview   = $item->getUrl('preview');
         });
 
         return $files;
     }
 
-    public function minibller_no()
+    public function trans_box()
     {
-        return $this->belongsTo(Minibller::class, 'minibller_no_id');
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
+        return $this->belongsTo(Transeformer::class, 'trans_box_id');
     }
 }

@@ -79,8 +79,23 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="#order_by_user_alerts" role="tab" data-toggle="tab">
+                {{ trans('cruds.userAlert.title') }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#created_by_billcons" role="tab" data-toggle="tab">
+                {{ trans('cruds.billcon.title') }}
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="#user_user_alerts" role="tab" data-toggle="tab">
                 {{ trans('cruds.userAlert.title') }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#user_contractors" role="tab" data-toggle="tab">
+                {{ trans('cruds.contractor.title') }}
             </a>
         </li>
     </ul>
@@ -88,8 +103,17 @@
         <div class="tab-pane" role="tabpanel" id="assigned_to_tasks">
             @includeIf('admin.users.relationships.assignedToTasks', ['tasks' => $user->assignedToTasks])
         </div>
+        <div class="tab-pane" role="tabpanel" id="order_by_user_alerts">
+            @includeIf('admin.users.relationships.orderByUserAlerts', ['userAlerts' => $user->orderByUserAlerts])
+        </div>
+        <div class="tab-pane" role="tabpanel" id="created_by_billcons">
+            @includeIf('admin.users.relationships.createdByBillcons', ['billcons' => $user->createdByBillcons])
+        </div>
         <div class="tab-pane" role="tabpanel" id="user_user_alerts">
             @includeIf('admin.users.relationships.userUserAlerts', ['userAlerts' => $user->userUserAlerts])
+        </div>
+        <div class="tab-pane" role="tabpanel" id="user_contractors">
+            @includeIf('admin.users.relationships.userContractors', ['contractors' => $user->userContractors])
         </div>
     </div>
 </div>

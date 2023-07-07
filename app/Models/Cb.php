@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
-use \DateTimeInterface;
 use App\Traits\Auditable;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cb extends Model
 {
-    use SoftDeletes;
-    use Auditable;
-    use HasFactory;
+    use SoftDeletes, Auditable, HasFactory;
 
     public $table = 'cbs';
 
@@ -34,9 +32,19 @@ class Cb extends Model
         'deleted_at',
     ];
 
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+
     public function cbNumberMinibllers()
     {
         return $this->hasMany(Minibller::class, 'cb_number_id', 'id');
+    }
+
+    public function minibllerNoBoxes()
+    {
+        return $this->hasMany(Box::class, 'minibller_no_id', 'id');
     }
 
     public function cbNoTranseformers()
@@ -47,10 +55,5 @@ class Cb extends Model
     public function transe()
     {
         return $this->belongsTo(Transeformer::class, 'transe_id');
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
     }
 }

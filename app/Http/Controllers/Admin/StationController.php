@@ -6,96 +6,44 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyStationRequest;
 use App\Http\Requests\StoreStationRequest;
 use App\Http\Requests\UpdateStationRequest;
+use App\Models\Autorecloser;
+use App\Models\Avr;
+use App\Models\Box;
+use App\Models\Ct;
 use App\Models\Line;
+use App\Models\Rmu;
+use App\Models\SectionLazy;
 use App\Models\Station;
 use App\Models\Transeformer;
-
-
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Yajra\DataTables\Facades\DataTables;
 
 class StationController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         abort_if(Gate::denies('station_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            $query = Station::with(['Transeformers','feeders'])->select(sprintf('%s.*', (new Station)->table));
-
-            $table = Datatables::of($query);
-
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
-
-            $table->editColumn('actions', function ($row) {
-                $viewGate      = 'station_show';
-                $editGate      = 'station_edit';
-                $deleteGate    = 'station_delete';
-                $crudRoutePart = 'stations';
-
-                return view('partials.datatablesActions', compact(
-                    'viewGate',
-                    'editGate',
-                    'deleteGate',
-                    'crudRoutePart',
-                    'row'
-                ));
-            });
-
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : '';
-            });
-            $table->editColumn('station_no', function ($row) {
-                return $row->station_no ? $row->station_no : '';
-            });
-            $table->editColumn('location', function ($row) {
-                return $row->location ? $row->location : '';
-            });
-     
-        $table->editColumn('feeders', function ($row) {
-            $labels = [];
-            foreach ($row->feeders as $feeders) {
-                $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $feeders->line_no);
-            }
-
-            return implode(' ', $labels);
-        });
-        $table->editColumn('feeders', function ($row) {
-            $labels = [];
-            foreach ($row->feeders ->Transeformers as $feeders) {
-                $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $feeders->t_no);
-            }
-
-            return implode(' ', $labels);
-        });
-
-
-            // $table->editColumn('Transeformers', function ($row) {
-            //     $labels = [];
-            //     foreach ($row->Transeformers as $Transeformers) {
-            //         $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $Transeformers->t_no);
-            //     }
-
-            //     return implode(' ', $labels);
-
-            $table->rawColumns(['actions', 'placeholder', 'Transeformers', 'feeders']);
-
-            return $table->make(true);
-        }
+        $stations = Station::with(['feeders', 'trans', 'box_cosutomers', 'ct_stations', 'rmus', 'auto_closers', 'section_lazies', 'avrs'])->get();
 
         $lines = Line::get();
-        // $Station = Station::get();
-        // $trans = $Station->Transeformer;
-        // $trans = $Transeformer();
-// dd( $trans);
-// foreach ($trans->Transeformers as $Transeformers) {
-//     $trans[] = sprintf('<span class="label label-info label-many">%s</span>', $Transeformers->t_no);
-// }
 
-        return view('admin.stations.index', compact('lines'));
+        $transeformers = Transeformer::get();
+
+        $boxes = Box::get();
+
+        $cts = Ct::get();
+
+        $rmus = Rmu::get();
+
+        $autoreclosers = Autorecloser::get();
+
+        $section_lazies = SectionLazy::get();
+
+        $avrs = Avr::get();
+
+        return view('admin.stations.index', compact('autoreclosers', 'avrs', 'boxes', 'cts', 'lines', 'rmus', 'section_lazies', 'stations', 'transeformers'));
     }
 
     public function create()
@@ -104,13 +52,34 @@ class StationController extends Controller
 
         $feeders = Line::pluck('line_no', 'id');
 
-        return view('admin.stations.create', compact('feeders'));
+        $trans = Transeformer::pluck('t_no', 'id');
+
+        $box_cosutomers = Box::pluck('box_number', 'id');
+
+        $ct_stations = Ct::pluck('ct_no', 'id');
+
+        $rmus = Rmu::pluck('rmu_no', 'id');
+
+        $auto_closers = Autorecloser::pluck('auto_recloser_no', 'id');
+
+        $section_lazies = SectionLazy::pluck('section_lazey', 'id');
+
+        $avrs = Avr::pluck('avr_no', 'id');
+
+        return view('admin.stations.create', compact('auto_closers', 'avrs', 'box_cosutomers', 'ct_stations', 'feeders', 'rmus', 'section_lazies', 'trans'));
     }
 
     public function store(StoreStationRequest $request)
     {
         $station = Station::create($request->all());
         $station->feeders()->sync($request->input('feeders', []));
+        $station->trans()->sync($request->input('trans', []));
+        $station->box_cosutomers()->sync($request->input('box_cosutomers', []));
+        $station->ct_stations()->sync($request->input('ct_stations', []));
+        $station->rmus()->sync($request->input('rmus', []));
+        $station->auto_closers()->sync($request->input('auto_closers', []));
+        $station->section_lazies()->sync($request->input('section_lazies', []));
+        $station->avrs()->sync($request->input('avrs', []));
 
         return redirect()->route('admin.stations.index');
     }
@@ -121,15 +90,36 @@ class StationController extends Controller
 
         $feeders = Line::pluck('line_no', 'id');
 
-        $station->load('feeders');
+        $trans = Transeformer::pluck('t_no', 'id');
 
-        return view('admin.stations.edit', compact('feeders', 'station'));
+        $box_cosutomers = Box::pluck('box_number', 'id');
+
+        $ct_stations = Ct::pluck('ct_no', 'id');
+
+        $rmus = Rmu::pluck('rmu_no', 'id');
+
+        $auto_closers = Autorecloser::pluck('auto_recloser_no', 'id');
+
+        $section_lazies = SectionLazy::pluck('section_lazey', 'id');
+
+        $avrs = Avr::pluck('avr_no', 'id');
+
+        $station->load('feeders', 'trans', 'box_cosutomers', 'ct_stations', 'rmus', 'auto_closers', 'section_lazies', 'avrs');
+
+        return view('admin.stations.edit', compact('auto_closers', 'avrs', 'box_cosutomers', 'ct_stations', 'feeders', 'rmus', 'section_lazies', 'station', 'trans'));
     }
 
     public function update(UpdateStationRequest $request, Station $station)
     {
         $station->update($request->all());
         $station->feeders()->sync($request->input('feeders', []));
+        $station->trans()->sync($request->input('trans', []));
+        $station->box_cosutomers()->sync($request->input('box_cosutomers', []));
+        $station->ct_stations()->sync($request->input('ct_stations', []));
+        $station->rmus()->sync($request->input('rmus', []));
+        $station->auto_closers()->sync($request->input('auto_closers', []));
+        $station->section_lazies()->sync($request->input('section_lazies', []));
+        $station->avrs()->sync($request->input('avrs', []));
 
         return redirect()->route('admin.stations.index');
     }
@@ -138,7 +128,7 @@ class StationController extends Controller
     {
         abort_if(Gate::denies('station_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $station->load('feeders', 'stationDiagrams', 'stationLines', 'feederDiagrams');
+        $station->load('feeders', 'trans', 'box_cosutomers', 'ct_stations', 'rmus', 'auto_closers', 'section_lazies', 'avrs', 'stationDiagrams', 'stationLines', 'nameProjects', 'feederDiagrams');
 
         return view('admin.stations.show', compact('station'));
     }

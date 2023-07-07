@@ -22,9 +22,6 @@
 
                             </th>
                             <th>
-                                {{ trans('cruds.task.fields.id') }}
-                            </th>
-                            <th>
                                 {{ trans('cruds.task.fields.lics_file') }}
                             </th>
                             <th>
@@ -40,13 +37,7 @@
                                 {{ trans('cruds.task.fields.due_date') }}
                             </th>
                             <th>
-                                {{ trans('cruds.task.fields.extract') }}
-                            </th>
-                            <th>
                                 {{ trans('cruds.task.fields.city') }}
-                            </th>
-                            <th>
-                                {{ trans('cruds.task.fields.streat') }}
                             </th>
                             <th>
                                 {{ trans('cruds.task.fields.stuts') }}
@@ -55,10 +46,13 @@
                                 {{ trans('cruds.task.fields.assigned_to') }}
                             </th>
                             <th>
-                                {{ trans('cruds.task.fields.created_at') }}
+                                {{ trans('cruds.task.fields.move_to_con_date') }}
                             </th>
                             <th>
-                                {{ trans('cruds.task.fields.updated_at') }}
+                                {{ trans('cruds.task.fields.enjaz_stuts') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.task.fields.con') }}
                             </th>
                             <th>
                                 &nbsp;
@@ -70,9 +64,6 @@
                             <tr data-entry-id="{{ $task->id }}">
                                 <td>
 
-                                </td>
-                                <td>
-                                    {{ $task->id ?? '' }}
                                 </td>
                                 <td>
                                     @foreach($task->lics_file as $key => $media)
@@ -94,13 +85,7 @@
                                     {{ $task->due_date ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $task->extract ?? '' }}
-                                </td>
-                                <td>
                                     {{ $task->city ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $task->streat ?? '' }}
                                 </td>
                                 <td>
                                     {{ App\Models\Task::STUTS_SELECT[$task->stuts] ?? '' }}
@@ -109,10 +94,13 @@
                                     {{ $task->assigned_to->name ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $task->created_at ?? '' }}
+                                    {{ $task->move_to_con_date ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $task->updated_at ?? '' }}
+                                    {{ App\Models\Task::ENJAZ_STUTS_SELECT[$task->enjaz_stuts] ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $task->con ?? '' }}
                                 </td>
                                 <td>
                                     @can('task_show')
@@ -182,8 +170,8 @@
 
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
-    order: [[ 1, 'desc' ]],
-    pageLength: 100,
+    order: [[ 2, 'desc' ]],
+    pageLength: 10,
   });
   let table = $('.datatable-assignedToTasks:not(.ajaxTable)').DataTable({ buttons: dtButtons })
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){

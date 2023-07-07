@@ -47,6 +47,16 @@ class Line extends Model
         return $this->hasMany(Transeformer::class, 'feeder_id', 'id');
     }
 
+    public function feederProjects()
+    {
+        return $this->hasMany(Project::class, 'feeder_id', 'id');
+    }
+
+    public function rmuFeederRmus()
+    {
+        return $this->hasMany(Rmu::class, 'rmu_feeder_id', 'id');
+    }
+
     public function feedersStations()
     {
         return $this->belongsToMany(Station::class);

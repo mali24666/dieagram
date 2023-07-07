@@ -10,7 +10,9 @@ class AddRelationshipFieldsToBoxesTable extends Migration
     {
         Schema::table('boxes', function (Blueprint $table) {
             $table->unsignedBigInteger('minibller_no_id')->nullable();
-            $table->foreign('minibller_no_id', 'minibller_no_fk_7400995')->references('id')->on('minibllers');
+            $table->foreign('minibller_no_id', 'minibller_no_fk_7400995')->references('id')->on('cbs');
+            $table->unsignedBigInteger('trans_box_id')->nullable();
+            $table->foreign('trans_box_id', 'trans_box_fk_8640236')->references('id')->on('transeformers');
         });
     }
 }

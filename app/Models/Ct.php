@@ -39,6 +39,11 @@ class Ct extends Model
         return $this->belongsToMany(Diagram::class);
     }
 
+    public function ctStationStations()
+    {
+        return $this->belongsToMany(Station::class);
+    }
+
     public function point_1()
     {
         return $this->belongsTo(Line::class, 'point_1_id');

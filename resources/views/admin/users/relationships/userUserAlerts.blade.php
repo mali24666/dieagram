@@ -28,16 +28,31 @@
                                 {{ trans('cruds.userAlert.fields.alert_text') }}
                             </th>
                             <th>
+                                {{ trans('cruds.userAlert.fields.lices_no') }}
+                            </th>
+                            <th>
                                 {{ trans('cruds.userAlert.fields.alert_link') }}
                             </th>
                             <th>
                                 {{ trans('cruds.userAlert.fields.user') }}
                             </th>
                             <th>
-                                {{ trans('cruds.userAlert.fields.lices_no') }}
+                                {{ trans('cruds.userAlert.fields.pic') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.userAlert.fields.pic_after') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.userAlert.fields.eng_sign_photo') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.userAlert.fields.order_by') }}
                             </th>
                             <th>
                                 {{ trans('cruds.userAlert.fields.created_at') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.userAlert.fields.updated_at') }}
                             </th>
                             <th>
                                 &nbsp;
@@ -57,6 +72,9 @@
                                     {{ $userAlert->alert_text ?? '' }}
                                 </td>
                                 <td>
+                                    {{ $userAlert->lices_no->name ?? '' }}
+                                </td>
+                                <td>
                                     {{ $userAlert->alert_link ?? '' }}
                                 </td>
                                 <td>
@@ -65,10 +83,34 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    {{ $userAlert->lices_no->name ?? '' }}
+                                    @foreach($userAlert->pic as $key => $media)
+                                        <a href="{{ $media->getUrl() }}" target="_blank" style="display: inline-block">
+                                            <img src="{{ $media->getUrl('thumb') }}">
+                                        </a>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($userAlert->pic_after as $key => $media)
+                                        <a href="{{ $media->getUrl() }}" target="_blank" style="display: inline-block">
+                                            <img src="{{ $media->getUrl('thumb') }}">
+                                        </a>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($userAlert->eng_sign_photo as $key => $media)
+                                        <a href="{{ $media->getUrl() }}" target="_blank" style="display: inline-block">
+                                            <img src="{{ $media->getUrl('thumb') }}">
+                                        </a>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    {{ $userAlert->order_by->name ?? '' }}
                                 </td>
                                 <td>
                                     {{ $userAlert->created_at ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $userAlert->updated_at ?? '' }}
                                 </td>
                                 <td>
                                     @can('user_alert_show')
@@ -77,6 +119,11 @@
                                         </a>
                                     @endcan
 
+                                    @can('user_alert_edit')
+                                        <a class="btn btn-xs btn-info" href="{{ route('admin.user-alerts.edit', $userAlert->id) }}">
+                                            {{ trans('global.edit') }}
+                                        </a>
+                                    @endcan
 
                                     @can('user_alert_delete')
                                         <form action="{{ route('admin.user-alerts.destroy', $userAlert->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">

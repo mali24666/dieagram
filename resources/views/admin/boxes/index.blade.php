@@ -44,6 +44,9 @@
                             {{ trans('cruds.box.fields.box_photo') }}
                         </th>
                         <th>
+                            {{ trans('cruds.box.fields.trans_box') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -56,8 +59,8 @@
                         <td>
                             <select class="search">
                                 <option value>{{ trans('global.all') }}</option>
-                                @foreach($minibllers as $key => $item)
-                                    <option value="{{ $item->minibller_number }}">{{ $item->minibller_number }}</option>
+                                @foreach($cbs as $key => $item)
+                                    <option value="{{ $item->trans_cb_fider_number }}">{{ $item->trans_cb_fider_number }}</option>
                                 @endforeach
                             </select>
                         </td>
@@ -86,6 +89,14 @@
                         <td>
                         </td>
                         <td>
+                            <select class="search">
+                                <option value>{{ trans('global.all') }}</option>
+                                @foreach($transeformers as $key => $item)
+                                    <option value="{{ $item->t_no }}">{{ $item->t_no }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
                         </td>
                     </tr>
                 </thead>
@@ -99,7 +110,7 @@
                                 {{ $box->id ?? '' }}
                             </td>
                             <td>
-                                {{ $box->minibller_no->minibller_number ?? '' }}
+                                {{ $box->minibller_no->trans_cb_fider_number ?? '' }}
                             </td>
                             <td>
                                 {{ $box->box_number ?? '' }}
@@ -119,6 +130,9 @@
                                         <img src="{{ $media->getUrl('thumb') }}">
                                     </a>
                                 @endforeach
+                            </td>
+                            <td>
+                                {{ $box->trans_box->t_no ?? '' }}
                             </td>
                             <td>
                                 @can('box_show')

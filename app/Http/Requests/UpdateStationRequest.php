@@ -31,6 +31,48 @@ class UpdateStationRequest extends FormRequest
             'feeders' => [
                 'array',
             ],
+            'trans.*' => [
+                'integer',
+            ],
+            'trans' => [
+                'array',
+            ],
+            'box_cosutomers.*' => [
+                'integer',
+            ],
+            'box_cosutomers' => [
+                'array',
+            ],
+            'ct_stations.*' => [
+                'integer',
+            ],
+            'ct_stations' => [
+                'array',
+            ],
+            'rmus.*' => [
+                'integer',
+            ],
+            'rmus' => [
+                'array',
+            ],
+            'auto_closers.*' => [
+                'integer',
+            ],
+            'auto_closers' => [
+                'array',
+            ],
+            'section_lazies.*' => [
+                'integer',
+            ],
+            'section_lazies' => [
+                'array',
+            ],
+            'avrs.*' => [
+                'integer',
+            ],
+            'avrs' => [
+                'array',
+            ],
         ];
     }
 }

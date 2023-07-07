@@ -115,6 +115,12 @@ class UpdateTranseformerRequest extends FormRequest
                 'string',
                 'nullable',
             ],
+            'boxes.*' => [
+                'integer',
+            ],
+            'boxes' => [
+                'array',
+            ],
             'transe_notes.*' => [
                 'integer',
             ],

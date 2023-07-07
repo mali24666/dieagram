@@ -34,6 +34,27 @@
                                 {{ trans('cruds.station.fields.feeders') }}
                             </th>
                             <th>
+                                {{ trans('cruds.station.fields.trans') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.station.fields.box_cosutomer') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.station.fields.ct_station') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.station.fields.rmu') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.station.fields.auto_closer') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.station.fields.section_lazy') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.station.fields.avr') }}
+                            </th>
+                            <th>
                                 &nbsp;
                             </th>
                         </tr>
@@ -56,6 +77,41 @@
                                 <td>
                                     @foreach($station->feeders as $key => $item)
                                         <span class="badge badge-info">{{ $item->line_no }}</span>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($station->trans as $key => $item)
+                                        <span class="badge badge-info">{{ $item->t_no }}</span>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($station->box_cosutomers as $key => $item)
+                                        <span class="badge badge-info">{{ $item->box_number }}</span>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($station->ct_stations as $key => $item)
+                                        <span class="badge badge-info">{{ $item->ct_no }}</span>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($station->rmus as $key => $item)
+                                        <span class="badge badge-info">{{ $item->rmu_no }}</span>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($station->auto_closers as $key => $item)
+                                        <span class="badge badge-info">{{ $item->auto_recloser_no }}</span>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($station->section_lazies as $key => $item)
+                                        <span class="badge badge-info">{{ $item->section_lazey }}</span>
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach($station->avrs as $key => $item)
+                                        <span class="badge badge-info">{{ $item->avr_no }}</span>
                                     @endforeach
                                 </td>
                                 <td>

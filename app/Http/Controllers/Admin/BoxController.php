@@ -8,7 +8,8 @@ use App\Http\Requests\MassDestroyBoxRequest;
 use App\Http\Requests\StoreBoxRequest;
 use App\Http\Requests\UpdateBoxRequest;
 use App\Models\Box;
-use App\Models\Minibller;
+use App\Models\Cb;
+use App\Models\Transeformer;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -22,20 +23,24 @@ class BoxController extends Controller
     {
         abort_if(Gate::denies('box_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $boxes = Box::with(['minibller_no', 'media'])->get();
+        $boxes = Box::with(['minibller_no', 'trans_box', 'media'])->get();
 
-        $minibllers = Minibller::get();
+        $cbs = Cb::get();
 
-        return view('admin.boxes.index', compact('boxes', 'minibllers'));
+        $transeformers = Transeformer::get();
+
+        return view('admin.boxes.index', compact('boxes', 'cbs', 'transeformers'));
     }
 
     public function create()
     {
         abort_if(Gate::denies('box_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $minibller_nos = Minibller::pluck('minibller_number', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $minibller_nos = Cb::pluck('trans_cb_fider_number', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.boxes.create', compact('minibller_nos'));
+        $trans_boxes = Transeformer::pluck('t_no', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        return view('admin.boxes.create', compact('minibller_nos', 'trans_boxes'));
     }
 
     public function store(StoreBoxRequest $request)
@@ -57,11 +62,13 @@ class BoxController extends Controller
     {
         abort_if(Gate::denies('box_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $minibller_nos = Minibller::pluck('minibller_number', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $minibller_nos = Cb::pluck('trans_cb_fider_number', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $box->load('minibller_no');
+        $trans_boxes = Transeformer::pluck('t_no', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.boxes.edit', compact('box', 'minibller_nos'));
+        $box->load('minibller_no', 'trans_box');
+
+        return view('admin.boxes.edit', compact('box', 'minibller_nos', 'trans_boxes'));
     }
 
     public function update(UpdateBoxRequest $request, Box $box)
@@ -70,14 +77,14 @@ class BoxController extends Controller
 
         if (count($box->box_photo) > 0) {
             foreach ($box->box_photo as $media) {
-                if (!in_array($media->file_name, $request->input('box_photo', []))) {
+                if (! in_array($media->file_name, $request->input('box_photo', []))) {
                     $media->delete();
                 }
             }
         }
         $media = $box->box_photo->pluck('file_name')->toArray();
         foreach ($request->input('box_photo', []) as $file) {
-            if (count($media) === 0 || !in_array($file, $media)) {
+            if (count($media) === 0 || ! in_array($file, $media)) {
                 $box->addMedia(storage_path('tmp/uploads/' . basename($file)))->toMediaCollection('box_photo');
             }
         }
@@ -89,7 +96,7 @@ class BoxController extends Controller
     {
         abort_if(Gate::denies('box_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $box->load('minibller_no');
+        $box->load('minibller_no', 'trans_box', 'boxCosutomerStations', 'boxTranseformers');
 
         return view('admin.boxes.show', compact('box'));
     }
@@ -105,7 +112,11 @@ class BoxController extends Controller
 
     public function massDestroy(MassDestroyBoxRequest $request)
     {
-        Box::whereIn('id', request('ids'))->delete();
+        $boxes = Box::find(request('ids'));
+
+        foreach ($boxes as $box) {
+            $box->delete();
+        }
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

@@ -93,6 +93,16 @@ class Transeformer extends Model implements HasMedia
         return $this->hasMany(Bill::class, 'transformer_id', 'id');
     }
 
+    public function transBoxBoxes()
+    {
+        return $this->hasMany(Box::class, 'trans_box_id', 'id');
+    }
+
+    public function transeferProjects()
+    {
+        return $this->hasMany(Project::class, 'transefer_id', 'id');
+    }
+
     public function transLines()
     {
         return $this->belongsToMany(Line::class);
@@ -101,6 +111,11 @@ class Transeformer extends Model implements HasMedia
     public function transDiagrams()
     {
         return $this->belongsToMany(Diagram::class);
+    }
+
+    public function transStations()
+    {
+        return $this->belongsToMany(Station::class);
     }
 
     public function getPictureBeforAttribute()
@@ -135,6 +150,11 @@ class Transeformer extends Model implements HasMedia
     public function feeder()
     {
         return $this->belongsTo(Line::class, 'feeder_id');
+    }
+
+    public function boxes()
+    {
+        return $this->belongsToMany(Box::class);
     }
 
     public function transe_notes()

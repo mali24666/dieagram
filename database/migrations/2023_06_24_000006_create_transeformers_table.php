@@ -33,10 +33,6 @@ class CreateTranseformersTable extends Migration
             $table->string('type')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
-            // $table->bigInteger('line_id')->nullable();
-
-            // $table->foreign('line_id')->references('id')->on('lines')->onDelete('cascade');
-
             $table->timestamps();
             $table->softDeletes();
         });

@@ -22,7 +22,31 @@ class LineController extends Controller
 
         $lines = Line::with(['station', 'trans', 'cts'])->get();
 
-        return view('admin.lines.index', compact('lines'));
+        $stations = Station::get();
+
+        $transeformers = Transeformer::get();
+
+        $cts = Ct::get();
+
+        return view('admin.lines.index', compact('cts', 'lines', 'stations', 'transeformers'));
+    }
+
+    public function fetchfeeder( $line)
+    {
+        abort_if(Gate::denies('line_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            // 
+            $lines = Line::where('id' ,$line)->with(['station', 'trans', 'cts'])->get();
+            $stations = Station::get();
+
+            $transeformers = Transeformer::get();
+    
+            $cts = Ct::get();
+    
+        // $line->load('station', 'trans', 'cts', 'point1Cts', 'point2Cts', 'feederTranseformers', 'feedersStations');
+        // dd($lines);
+        return view('admin.lines.index', compact('cts', 'lines', 'stations', 'transeformers'));
+
+        // return view('admin.lines.show', compact('line'));
     }
 
     public function create()
@@ -75,7 +99,7 @@ class LineController extends Controller
     {
         abort_if(Gate::denies('line_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $line->load('station', 'trans', 'cts', 'point1Cts', 'point2Cts', 'feederTranseformers', 'feedersStations');
+        $line->load('station', 'trans', 'cts', 'point1Cts', 'point2Cts', 'feederTranseformers', 'feederProjects', 'rmuFeederRmus', 'feedersStations');
 
         return view('admin.lines.show', compact('line'));
     }

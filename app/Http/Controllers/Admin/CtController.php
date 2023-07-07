@@ -60,7 +60,60 @@ class CtController extends Controller
             return $table->make(true);
         }
 
-        return view('admin.cts.index');
+        $lines = Line::get();
+
+        return view('admin.cts.index', compact('lines'));
+    }
+    public function fetchCt(request $request)
+    { 
+        // dd($request);
+        abort_if(Gate::denies('ct_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $id = $request->id;
+        // dd($id);
+        if ($request->ajax()) {
+            $query = Ct::where('id' ,$id)->with(['point_1', 'point_2'])->select(sprintf('%s.*', (new Ct)->table));
+            $table = Datatables::of($query);
+
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate      = 'ct_show';
+                $editGate      = 'ct_edit';
+                $deleteGate    = 'ct_delete';
+                $crudRoutePart = 'cts';
+
+                return view('partials.datatablesActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->editColumn('id', function ($row) {
+                return $row->id ? $row->id : '';
+            });
+            $table->editColumn('ct_no', function ($row) {
+                return $row->ct_no ? $row->ct_no : '';
+            });
+            $table->addColumn('point_1_line_no', function ($row) {
+                return $row->point_1 ? $row->point_1->line_no : '';
+            });
+
+            $table->addColumn('point_2_line_no', function ($row) {
+                return $row->point_2 ? $row->point_2->line_no : '';
+            });
+
+            $table->rawColumns(['actions', 'placeholder', 'point_1', 'point_2']);
+
+            return $table->make(true);
+        }
+
+        $lines = Line::get();
+
+        return view('admin.cts.index', compact('lines'));
     }
 
     public function create()
@@ -105,7 +158,7 @@ class CtController extends Controller
     {
         abort_if(Gate::denies('ct_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $ct->load('point_1', 'point_2', 'ctDiagrams');
+        $ct->load('point_1', 'point_2', 'ctDiagrams', 'ctStationStations');
 
         return view('admin.cts.show', compact('ct'));
     }

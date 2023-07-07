@@ -1,8 +1,5 @@
 <?php
- 
- 
- 
-
+ use App\Http\Controllers\admin\TranseformerController;
 Route::redirect('/', '/login');
 Route::get('/home', function () {
     if (session('status')) {
@@ -33,6 +30,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('transeformers/media', 'TranseformerController@storeMedia')->name('transeformers.storeMedia');
     Route::post('transeformers/ckmedia', 'TranseformerController@storeCKEditorImages')->name('transeformers.storeCKEditorImages');
     Route::resource('transeformers', 'TranseformerController');
+    Route::get('transeformers/fetchTranse/{id}', 'TranseformerController@fetchTranse')->name('transeformers.fetchTranse');
 
     // Cb
     Route::delete('cbs/destroy', 'CbController@massDestroy')->name('cbs.massDestroy');
@@ -73,8 +71,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // User Alerts
     Route::delete('user-alerts/destroy', 'UserAlertsController@massDestroy')->name('user-alerts.massDestroy');
+    Route::post('user-alerts/media', 'UserAlertsController@storeMedia')->name('user-alerts.storeMedia');
+    Route::post('user-alerts/ckmedia', 'UserAlertsController@storeCKEditorImages')->name('user-alerts.storeCKEditorImages');
     Route::get('user-alerts/read', 'UserAlertsController@read');
-    Route::resource('user-alerts', 'UserAlertsController', ['except' => ['edit', 'update']]);
+    Route::resource('user-alerts', 'UserAlertsController');
 
     // Task Status
     Route::delete('task-statuses/destroy', 'TaskStatusController@massDestroy')->name('task-statuses.massDestroy');
@@ -89,7 +89,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('tasks/media', 'TaskController@storeMedia')->name('tasks.storeMedia');
     Route::post('tasks/ckmedia', 'TaskController@storeCKEditorImages')->name('tasks.storeCKEditorImages');
     Route::resource('tasks', 'TaskController');
-    Route::get('/tasks/add/{id}', 'TaskController@add')->name('tasks.add');
 
     // Tasks Calendar
     Route::resource('tasks-calendars', 'TasksCalendarController', ['except' => ['create', 'store', 'edit', 'update', 'show', 'destroy']]);
@@ -99,44 +98,63 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('esfelts/media', 'EsfeltController@storeMedia')->name('esfelts.storeMedia');
     Route::post('esfelts/ckmedia', 'EsfeltController@storeCKEditorImages')->name('esfelts.storeCKEditorImages');
     Route::resource('esfelts', 'EsfeltController');
-    Route::get('/esfelts/add/{id}', 'EsfeltController@add')->name('esfelts.add');
 
-     // Billcon
-    Route::delete('billcons/destroy', 'BillconController@massDestroy')->name('billcons.massDestroy');
-    Route::post('billcons/media', 'BillconController@storeMedia')->name('billcons.storeMedia');
-    Route::post('billcons/ckmedia', 'BillconController@storeCKEditorImages')->name('billcons.storeCKEditorImages');
-    Route::resource('billcons', 'BillconController');
-    Route::get('/billcons/add/{id}', 'BillconController@add')->name('billcons.add');
-
-        // Contractor
-        Route::delete('contractors/destroy', 'ContractorController@massDestroy')->name('contractors.massDestroy');
-        Route::post('contractors/media', 'ContractorController@storeMedia')->name('contractors.storeMedia');
-        Route::post('contractors/ckmedia', 'ContractorController@storeCKEditorImages')->name('contractors.storeCKEditorImages');
-        Route::resource('contractors', 'ContractorController');
-    
     // Close
     Route::delete('closes/destroy', 'CloseController@massDestroy')->name('closes.massDestroy');
     Route::post('closes/media', 'CloseController@storeMedia')->name('closes.storeMedia');
     Route::post('closes/ckmedia', 'CloseController@storeCKEditorImages')->name('closes.storeCKEditorImages');
     Route::resource('closes', 'CloseController');
-    Route::get('/closes/add/{id}', 'CloseController@add')->name('closes.add');
 
-        // Station
-        Route::delete('stations/destroy', 'StationController@massDestroy')->name('stations.massDestroy');
-        Route::resource('stations', 'StationController');
-    
-        // Line
-        Route::delete('lines/destroy', 'LineController@massDestroy')->name('lines.massDestroy');
-        Route::resource('lines', 'LineController');
-    
-        // Ct
-        Route::delete('cts/destroy', 'CtController@massDestroy')->name('cts.massDestroy');
-        Route::resource('cts', 'CtController');
-    
-        // Diagram
-        Route::delete('diagrams/destroy', 'DiagramController@massDestroy')->name('diagrams.massDestroy');
-        Route::resource('diagrams', 'DiagramController');
-    
+    // Contractor
+    Route::delete('contractors/destroy', 'ContractorController@massDestroy')->name('contractors.massDestroy');
+    Route::post('contractors/media', 'ContractorController@storeMedia')->name('contractors.storeMedia');
+    Route::post('contractors/ckmedia', 'ContractorController@storeCKEditorImages')->name('contractors.storeCKEditorImages');
+    Route::resource('contractors', 'ContractorController');
+
+    // Billcon
+    Route::delete('billcons/destroy', 'BillconController@massDestroy')->name('billcons.massDestroy');
+    Route::post('billcons/media', 'BillconController@storeMedia')->name('billcons.storeMedia');
+    Route::post('billcons/ckmedia', 'BillconController@storeCKEditorImages')->name('billcons.storeCKEditorImages');
+    Route::resource('billcons', 'BillconController');
+
+    // Station
+    Route::delete('stations/destroy', 'StationController@massDestroy')->name('stations.massDestroy');
+    Route::resource('stations', 'StationController');
+
+    // Line
+    Route::delete('lines/destroy', 'LineController@massDestroy')->name('lines.massDestroy');
+    Route::resource('lines', 'LineController');
+    Route::get('/line/fetchfeeder/{id}', 'LineController@fetchfeeder')->name('lines.fetchfeeder');
+
+    // Ct
+    Route::delete('cts/destroy', 'CtController@massDestroy')->name('cts.massDestroy');
+    Route::resource('cts', 'CtController');
+    Route::get('/cts/fetchCt/{id}', 'CtController@fetchCt')->name('cts.fetchCt');
+
+    // Diagram
+    Route::delete('diagrams/destroy', 'DiagramController@massDestroy')->name('diagrams.massDestroy');
+    Route::resource('diagrams', 'DiagramController');
+
+    // Project
+    Route::delete('projects/destroy', 'ProjectController@massDestroy')->name('projects.massDestroy');
+    Route::resource('projects', 'ProjectController');
+
+    // Rmu
+    Route::delete('rmus/destroy', 'RmuController@massDestroy')->name('rmus.massDestroy');
+    Route::resource('rmus', 'RmuController');
+
+    // Autorecloser
+    Route::delete('autoreclosers/destroy', 'AutorecloserController@massDestroy')->name('autoreclosers.massDestroy');
+    Route::resource('autoreclosers', 'AutorecloserController');
+
+    // Section Lazy
+    Route::delete('section-lazies/destroy', 'SectionLazyController@massDestroy')->name('section-lazies.massDestroy');
+    Route::resource('section-lazies', 'SectionLazyController');
+
+    // Avr
+    Route::delete('avrs/destroy', 'AvrController@massDestroy')->name('avrs.massDestroy');
+    Route::resource('avrs', 'AvrController');
+
     Route::get('global-search', 'GlobalSearchController@search')->name('globalSearch');
     Route::get('messenger', 'MessengerController@index')->name('messenger.index');
     Route::get('messenger/create', 'MessengerController@createTopic')->name('messenger.createTopic');
@@ -158,9 +176,11 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
     }
 });
  //project 
-Route::get('/pr', function () {
+ Route::get('/pr', function () {
     return view('projects');
 });
- 
+
 Route::apiResource('projects', ProjectController::class);
+Route::get('projects/fetchTranc/{id}', 'ProjectController@fetchTranc')->name('project.fetchTranc');
+Route::post('projects/ct_postion/{id}', 'ProjectController@ct_postion')->name('project.ct_postion');
 

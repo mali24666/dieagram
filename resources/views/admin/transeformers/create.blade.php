@@ -236,6 +236,22 @@
                 <span class="help-block">{{ trans('cruds.transeformer.fields.feeder_helper') }}</span>
             </div>
             <div class="form-group">
+                <label for="boxes">{{ trans('cruds.transeformer.fields.box') }}</label>
+                <div style="padding-bottom: 4px">
+                    <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
+                    <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
+                </div>
+                <select class="form-control select2 {{ $errors->has('boxes') ? 'is-invalid' : '' }}" name="boxes[]" id="boxes" multiple>
+                    @foreach($boxes as $id => $box)
+                        <option value="{{ $id }}" {{ in_array($id, old('boxes', [])) ? 'selected' : '' }}>{{ $box }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('boxes'))
+                    <span class="text-danger">{{ $errors->first('boxes') }}</span>
+                @endif
+                <span class="help-block">{{ trans('cruds.transeformer.fields.box_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <label for="transe_notes">{{ trans('cruds.transeformer.fields.transe_note') }}</label>
                 <div style="padding-bottom: 4px">
                     <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>

@@ -333,7 +333,7 @@
                             @endcan
                             @can('diagram_access')
                                 <li class="nav-item">
-                                    <a href="{{ route("admin.diagrams.index") }}" class="nav-link {{ request()->is("admin/diagrams") || request()->is("admin/diagrams/*") ? "active" : "" }}">
+                                    <a href="{{ url("pr") }}" class="nav-link {{ request()->is("pr") || request()->is("pr*") ? "active" : "" }}">
                                         <i class="fa-fw nav-icon fas fa-cogs">
 
                                         </i>

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+{{-- @extends('layouts.admin')
 @section('content')
 @can('diagram_create')
     <div style="margin-bottom: 10px;" class="row">
@@ -85,7 +85,7 @@
                         <th width="10">
 
                         </th>
-                        <th>
+                        {{-- <th>
                             {{ trans('cruds.diagram.fields.id') }}
                         </th>
                         <th>
@@ -93,7 +93,7 @@
                         </th>
                         <th>
                             {{ trans('cruds.diagram.fields.feeder') }}
-                        </th>
+                        </th> --}}
                         <th>
                             {{ trans('cruds.diagram.fields.ct') }}
                         </th>
@@ -333,4 +333,4 @@
                         </tr>
                     @endforeach
                 </tbody>
-            </table> --}}
+            </table> --}} --}}

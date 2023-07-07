@@ -91,6 +91,16 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="#feeder_projects" role="tab" data-toggle="tab">
+                {{ trans('cruds.project.title') }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#rmu_feeder_rmus" role="tab" data-toggle="tab">
+                {{ trans('cruds.rmu.title') }}
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="#feeders_stations" role="tab" data-toggle="tab">
                 {{ trans('cruds.station.title') }}
             </a>
@@ -105,6 +115,12 @@
         </div>
         <div class="tab-pane" role="tabpanel" id="feeder_transeformers">
             @includeIf('admin.lines.relationships.feederTranseformers', ['transeformers' => $line->feederTranseformers])
+        </div>
+        <div class="tab-pane" role="tabpanel" id="feeder_projects">
+            @includeIf('admin.lines.relationships.feederProjects', ['projects' => $line->feederProjects])
+        </div>
+        <div class="tab-pane" role="tabpanel" id="rmu_feeder_rmus">
+            @includeIf('admin.lines.relationships.rmuFeederRmus', ['rmus' => $line->rmuFeederRmus])
         </div>
         <div class="tab-pane" role="tabpanel" id="feeders_stations">
             @includeIf('admin.lines.relationships.feedersStations', ['stations' => $line->feedersStations])

@@ -257,6 +257,16 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.transeformer.fields.box') }}
+                        </th>
+                        <td>
+                            @foreach($transeformer->boxes as $key => $box)
+                                <span class="label label-info">{{ $box->box_number }}</span>
+                            @endforeach
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.transeformer.fields.transe_note') }}
                         </th>
                         <td>
@@ -300,6 +310,16 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="#trans_box_boxes" role="tab" data-toggle="tab">
+                {{ trans('cruds.box.title') }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#transefer_projects" role="tab" data-toggle="tab">
+                {{ trans('cruds.project.title') }}
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="#trans_lines" role="tab" data-toggle="tab">
                 {{ trans('cruds.line.title') }}
             </a>
@@ -307,6 +327,11 @@
         <li class="nav-item">
             <a class="nav-link" href="#trans_diagrams" role="tab" data-toggle="tab">
                 {{ trans('cruds.diagram.title') }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#trans_stations" role="tab" data-toggle="tab">
+                {{ trans('cruds.station.title') }}
             </a>
         </li>
     </ul>
@@ -317,11 +342,20 @@
         <div class="tab-pane" role="tabpanel" id="transformer_bills">
             @includeIf('admin.transeformers.relationships.transformerBills', ['bills' => $transeformer->transformerBills])
         </div>
+        <div class="tab-pane" role="tabpanel" id="trans_box_boxes">
+            @includeIf('admin.transeformers.relationships.transBoxBoxes', ['boxes' => $transeformer->transBoxBoxes])
+        </div>
+        <div class="tab-pane" role="tabpanel" id="transefer_projects">
+            @includeIf('admin.transeformers.relationships.transeferProjects', ['projects' => $transeformer->transeferProjects])
+        </div>
         <div class="tab-pane" role="tabpanel" id="trans_lines">
             @includeIf('admin.transeformers.relationships.transLines', ['lines' => $transeformer->transLines])
         </div>
         <div class="tab-pane" role="tabpanel" id="trans_diagrams">
             @includeIf('admin.transeformers.relationships.transDiagrams', ['diagrams' => $transeformer->transDiagrams])
+        </div>
+        <div class="tab-pane" role="tabpanel" id="trans_stations">
+            @includeIf('admin.transeformers.relationships.transStations', ['stations' => $transeformer->transStations])
         </div>
     </div>
 </div>

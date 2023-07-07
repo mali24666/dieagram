@@ -11,9 +11,6 @@ class CreateLinesTable extends Migration
         Schema::create('lines', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('line_no')->nullable();
-            // $table->foreign('station_id')->references('id')->on('stations')->onDelete('cascade');
-            // $table->bigInteger('station_id')->nullable();
-
             $table->timestamps();
             $table->softDeletes();
         });

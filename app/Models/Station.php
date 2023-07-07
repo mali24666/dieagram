@@ -46,15 +46,12 @@ class Station extends Model
     {
         return $this->hasMany(Line::class, 'station_id', 'id');
     }
-/**
- * Get all of the comments for the Station
- *
- * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
- */
-public function Transeformers()
-{
-    return $this->hasManyThrough(Transeformer::class, Line::class);
-}
+
+    public function nameProjects()
+    {
+        return $this->hasMany(Project::class, 'name_id', 'id');
+    }
+
     public function feederDiagrams()
     {
         return $this->belongsToMany(Diagram::class);
@@ -63,5 +60,40 @@ public function Transeformers()
     public function feeders()
     {
         return $this->belongsToMany(Line::class);
+    }
+
+    public function trans()
+    {
+        return $this->belongsToMany(Transeformer::class);
+    }
+
+    public function box_cosutomers()
+    {
+        return $this->belongsToMany(Box::class);
+    }
+
+    public function ct_stations()
+    {
+        return $this->belongsToMany(Ct::class);
+    }
+
+    public function rmus()
+    {
+        return $this->belongsToMany(Rmu::class);
+    }
+
+    public function auto_closers()
+    {
+        return $this->belongsToMany(Autorecloser::class);
+    }
+
+    public function section_lazies()
+    {
+        return $this->belongsToMany(SectionLazy::class);
+    }
+
+    public function avrs()
+    {
+        return $this->belongsToMany(Avr::class);
     }
 }

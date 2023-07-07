@@ -74,6 +74,18 @@
                 <span class="help-block">{{ trans('cruds.box.fields.box_photo_helper') }}</span>
             </div>
             <div class="form-group">
+                <label for="trans_box_id">{{ trans('cruds.box.fields.trans_box') }}</label>
+                <select class="form-control select2 {{ $errors->has('trans_box') ? 'is-invalid' : '' }}" name="trans_box_id" id="trans_box_id">
+                    @foreach($trans_boxes as $id => $entry)
+                        <option value="{{ $id }}" {{ (old('trans_box_id') ? old('trans_box_id') : $box->trans_box->id ?? '') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('trans_box'))
+                    <span class="text-danger">{{ $errors->first('trans_box') }}</span>
+                @endif
+                <span class="help-block">{{ trans('cruds.box.fields.trans_box_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>

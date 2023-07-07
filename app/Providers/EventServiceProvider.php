@@ -4,6 +4,7 @@ namespace App\Providers;
 use App\Models\Esfelt;
 use App\Models\Task;
 use App\Models\Billcon;
+use App\Models\Project;
 
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -24,6 +25,8 @@ use App\Events\reject;
 use App\Observers\esefeltObserve;
 use App\Observers\taskobserv;
 use App\Observers\billconObserver;
+use App\Observers\ProjectObserver;
+
 
 
 use App\Events\cons;
@@ -74,6 +77,7 @@ class EventServiceProvider extends ServiceProvider
         Esfelt::Observe(esefeltObserve::class);
         Task::Observe(taskobserv::class);
         Billcon::Observe(billconObserver::class);
+        Project::Observe(ProjectObserver::class);
 
     }
 }

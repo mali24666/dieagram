@@ -68,10 +68,18 @@
                 {{ trans('cruds.diagram.title') }}
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#ct_station_stations" role="tab" data-toggle="tab">
+                {{ trans('cruds.station.title') }}
+            </a>
+        </li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane" role="tabpanel" id="ct_diagrams">
             @includeIf('admin.cts.relationships.ctDiagrams', ['diagrams' => $ct->ctDiagrams])
+        </div>
+        <div class="tab-pane" role="tabpanel" id="ct_station_stations">
+            @includeIf('admin.cts.relationships.ctStationStations', ['stations' => $ct->ctStationStations])
         </div>
     </div>
 </div>

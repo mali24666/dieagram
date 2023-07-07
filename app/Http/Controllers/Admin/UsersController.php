@@ -20,25 +20,25 @@ class UsersController extends Controller
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            $query = User::with(['roles'])->select(sprintf('%s.*', (new User())->table));
+            $query = User::with(['roles'])->select(sprintf('%s.*', (new User)->table));
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
 
             $table->editColumn('actions', function ($row) {
-                $viewGate = 'user_show';
-                $editGate = 'user_edit';
-                $deleteGate = 'user_delete';
+                $viewGate      = 'user_show';
+                $editGate      = 'user_edit';
+                $deleteGate    = 'user_delete';
                 $crudRoutePart = 'users';
 
                 return view('partials.datatablesActions', compact(
-                'viewGate',
-                'editGate',
-                'deleteGate',
-                'crudRoutePart',
-                'row'
-            ));
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
             });
 
             $table->editColumn('id', function ($row) {
@@ -108,7 +108,7 @@ class UsersController extends Controller
     {
         abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $user->load('roles', 'assignedToTasks', 'userUserAlerts');
+        $user->load('roles', 'assignedToTasks', 'orderByUserAlerts', 'createdByBillcons', 'userUserAlerts', 'userContractors');
 
         return view('admin.users.show', compact('user'));
     }
@@ -124,7 +124,11 @@ class UsersController extends Controller
 
     public function massDestroy(MassDestroyUserRequest $request)
     {
-        User::whereIn('id', request('ids'))->delete();
+        $users = User::find(request('ids'));
+
+        foreach ($users as $user) {
+            $user->delete();
+        }
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

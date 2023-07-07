@@ -28,7 +28,7 @@
                             {{ trans('cruds.box.fields.minibller_no') }}
                         </th>
                         <td>
-                            {{ $box->minibller_no->minibller_number ?? '' }}
+                            {{ $box->minibller_no->trans_cb_fider_number ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -75,6 +75,14 @@
                             @endforeach
                         </td>
                     </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.box.fields.trans_box') }}
+                        </th>
+                        <td>
+                            {{ $box->trans_box->t_no ?? '' }}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="form-group">
@@ -86,6 +94,22 @@
     </div>
 </div>
 
-
+<div class="card">
+    <div class="card-header">
+        {{ trans('global.relatedData') }}
+    </div>
+    <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="#box_cosutomer_stations" role="tab" data-toggle="tab">
+                {{ trans('cruds.station.title') }}
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" role="tabpanel" id="box_cosutomer_stations">
+            @includeIf('admin.boxes.relationships.boxCosutomerStations', ['stations' => $box->boxCosutomerStations])
+        </div>
+    </div>
+</div>
 
 @endsection

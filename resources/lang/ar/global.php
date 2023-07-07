@@ -302,7 +302,7 @@ return [
     'y_axis_field'                   => 'محور-واي حقل',
     'you_have_no_messages'           => 'ليس لديك أي رسالة',
     'content'                        => 'المحتوي',
-    'no_alerts'                      => 'لا يوجد تحذيرات',
+    'no_alerts'                      => 'لا يوجد اشعارات',
     'test_answers'                   => 'أجوبة الاختبار',
     'test_results'                   => 'نتائج الاختبار',
     'question_options'               => 'خيارات السؤال',
